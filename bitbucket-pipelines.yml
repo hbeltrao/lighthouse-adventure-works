@@ -1,0 +1,105 @@
+image: python:3.8
+
+pipelines:
+  # Continuous Integration pipeline
+  pull-requests:
+    '**':  # run on any branch
+      - step:
+          name: Set up and build
+          caches:
+            - pip
+          script:
+            # Set up dbt environment + dbt packages. Rather than passing
+            # profiles.yml to dbt commands explicitly, we'll store it where dbt
+            # expects it:
+            - pip install -r requirements.txt
+            - mkdir ~/.dbt
+            - cp .ci/profiles.yml ~/.dbt/profiles.yml
+            - dbt deps
+
+            # The following step downloads dbt artifacts from the Bitbucket
+            # Downloads, if available. (They are uploaded there by the CD
+            # process -- see "Upload artifacts for slim CI runs" step below.)
+            #
+            # curl loop ends with "|| true" because we want downstream steps to
+            # always run, even if the download fails. Running with "-L" to
+            # follow the redirect to S3, -s to suppress output, --fail to avoid
+            # outputting files if curl for whatever reason fails and confusing
+            # the downstream conditions.
+            #
+            # ">-" converts newlines into spaces in a multiline YAML entry. This
+            # does mean that individual bash commands have to be terminated with
+            # a semicolon in order not to conflict with flow keywords (like
+            # for-do-done or if-else-fi).
+            - >-
+              export API_ROOT="https://api.bitbucket.org/2.0/repositories/$BITBUCKET_REPO_FULL_NAME/downloads"; 
+              mkdir target-deferred/; 
+              for file in manifest.json run_results.json; do
+                curl -s -L --request GET \
+                  -u "$BITBUCKET_USERNAME:$BITBUCKET_APP_PASSWORD" \
+                  --url "$API_ROOT/$file" \
+                  --fail --output target-deferred/$file;
+              done || true
+            - >-
+              if [ -f target-deferred/manifest.json ]; then
+                export DBT_FLAGS="--defer --state target-deferred/ --select +state:modified";
+              else
+                export DBT_FLAGS="";
+              fi
+            # Creates a random PR schema  
+            - >-
+              export DBT_CI_SCHEMA="dbt_pr_$(( 1000 + $RANDOM % 5000 + 1 ))"
+            # Finally, run dbt commands with the appropriate flag that depends
+            # on whether state deferral is available. (We're skipping `dbt
+            # snapshot` because only production role can write to it and it's
+            # not set up otherwise.)
+            - dbt seed
+            - dbt run $DBT_FLAGS
+            - dbt test $DBT_FLAGS
+            # - dbt snapshot $DBT_FLAGS
+            # Finally, drop PR schema (changer for each DW)
+            - >- 
+              dbt run-operation drop_schema_ci --args '{schema: '"$DBT_CI_SCHEMA"'}'
+      - step: &lint
+          name: SQL Fluff models
+          caches:
+            - pip          
+          script:
+            - pip install -r requirements.txt
+            - git config remote.origin.fetch "+refs/heads/*:refs/remotes/origin/*"
+            - git remote update
+            - git fetch --all
+            - dbt deps
+            - diff-quality --fail-under 90 --violations sqlfluff --compare-branch origin/master
+      - step:
+          name: Security Scan
+          script:
+            # Run a security scan for sensitive data.
+            # See more security tools at https://bitbucket.org/product/features/pipelines/integrations?&category=security
+            - pipe: atlassian/git-secrets-scan:0.6.1
+
+  # Continuous Deployment pipeline
+  branches:
+    master:
+      - step:
+          name: Deploy to production
+          caches: 
+            - pip
+          artifacts:  # Save the dbt run artifacts for the next step (upload)
+            - target/*.json
+          script:
+            - pip install -r requirements.txt
+            - mkdir ~/.dbt
+            - cp .ci/profiles.yml ~/.dbt/profiles.yml
+            - dbt deps
+            - dbt seed --target prod
+            - dbt run --target prod
+            - dbt snapshot --target prod
+      - step:
+          name: Upload artifacts for slim CI runs
+          script:
+            - pipe: atlassian/bitbucket-upload-file:0.3.2
+              variables:
+                BITBUCKET_USERNAME: $BITBUCKET_USERNAME
+                BITBUCKET_APP_PASSWORD: $BITBUCKET_APP_PASSWORD
+                FILENAME: 'target/*.json'
