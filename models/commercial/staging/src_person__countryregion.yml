@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: person
+    schema: adventure_works_person_raw
+    database: adventure-works-368713
+    description: This is the Person Schema, containing all information from every person (employee, customer, supplier etc)
+    tables:
+      - name: person_countryregion
+        description: >
+        columns:
+          - name: countryregioncode
+            description: Primary key for country_region records.
+            tests:
+              - unique
+              - not_null
+
+          - name: name
+            description: full name of each country

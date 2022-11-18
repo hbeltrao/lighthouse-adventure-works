@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: person
+    schema: adventure_works_person_raw
+    database: adventure-works-368713
+    description: This is the Person Schema, containing all information from every person (employee, customer, supplier etc)
+    tables:
+      - name: person_address
+        description: >
+        columns:
+          - name: addressid
+            description: Primary key for address records.
+            tests:
+              - unique
+              - not_null
+
+          - name: stateprovinceid
+            description: foreign key connecting state_province table
+          
+          - name: city
+            description: full name of each city
+          
+          - name: spatiallocation
+            description: >
+          
+          - name: addressline1
+            description: >
+          
+          - name: addressline2
+            description: >
+          
+          - name: postalcode
+            description: >

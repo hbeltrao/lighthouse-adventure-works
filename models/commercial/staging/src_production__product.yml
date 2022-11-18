@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: production
+    schema: adventure_works_production_raw
+    database: adventure-works-368713
+    description: >
+    tables:
+      - name: production_product
+        description: >
+        columns:
+          - name: productid
+            description: Primary key.
+            tests:
+              - unique
+              - not_null
+
+          - name: name
+            description: >
