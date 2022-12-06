@@ -1,0 +1,39 @@
+version: 2
+
+sources:
+  - name: sales
+    schema: adventure_works_sales_raw
+    database: adventure-works-368713
+    description: Contains objects related to customers, sales orders, and sales territories.
+    tables:
+      - name: sales_salesorderdetail
+        description: Individual products associated with a specific sales order. See SalesOrderHeader.
+        columns:
+          - name: salesorderid
+            description: 	Primary key. Foreign key to SalesOrderHeader.SalesOrderID.
+            tests:
+              - not_null
+
+          - name: salesorderdetailid
+            description: Primary key. One incremental unique number per product sold.
+            tests:
+              - unique
+              - not_null
+
+          - name: productid
+            description: >
+        
+          - name: unitprice
+            description: >
+          
+          - name: orderqty
+            description: >
+
+          - name: specialofferid
+            description: >
+          
+          - name: carriertrackingnumber
+            description: >
+
+          - name: unitpricediscount
+            description: >

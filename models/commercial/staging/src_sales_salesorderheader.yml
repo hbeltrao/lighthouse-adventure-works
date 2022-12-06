@@ -1,0 +1,76 @@
+version: 2
+
+sources:
+  - name: sales
+    schema: adventure_works_sales_raw
+    database: adventure-works-368713
+    description: Contains objects related to customers, sales orders, and sales territories.
+    tables:
+      - name: sales_salesorderheader
+        description: General sales order information.
+        columns:
+          - name: salesorderid
+            description: Primary key.
+            tests:
+              - unique
+              - not_null
+
+          - name: salespersonid
+            description: >
+
+          - name: purchaseordernumber
+            description: >
+        
+          - name: billtoaddressid
+            description: >
+          
+          - name: taxamt
+            description: >
+
+          - name: shiptoaddressid
+            description: >
+
+          - name: onlineorderflag
+            description: >
+
+          - name: territoryid
+            description: >
+        
+          - name: status
+            description: >
+        
+          - name: currencyrateid
+            description: >
+
+          - name: orderdate
+            description: >
+
+          - name: creditcardapprovalcode
+            description: >
+
+          - name: subtotal
+            description: >
+        
+          - name: creditcardid
+            description: >
+
+          - name: revisionnumber
+            description: >
+
+          - name: freight
+            description: >
+
+          - name: duedate
+            description: >
+        
+          - name: totaldue
+            description: >
+        
+          - name: customerid
+            description: >
+
+          - name: shipdate
+            description: >
+        
+          - name: accountnumber
+            description: >

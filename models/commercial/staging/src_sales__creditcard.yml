@@ -1,0 +1,19 @@
+version: 2
+
+sources:
+  - name: sales
+    schema: adventure_works_sales_raw
+    database: adventure-works-368713
+    description: Contains objects related to customers, sales orders, and sales territories.
+    tables:
+      - name: sales_creditcard
+        description: Credit card information.
+        columns:
+          - name: creditcardid
+            description: Primary key.
+            tests:
+              - unique
+              - not_null
+
+          - name: cardtype
+            description: description of credit card type.

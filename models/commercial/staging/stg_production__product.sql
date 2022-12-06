@@ -1,6 +1,10 @@
 with source as (
 
-    select * from {{ source('production', 'production_product') }}
+    select
+        cast(productid as string) as productid
+        , name
+    
+    from {{ source('production', 'production_product') }}
 )
 
 select * from source

@@ -1,6 +1,11 @@
 with source as (
 
-    select * from {{ source('sales', 'sales_salesreason') }}
+    select
+        cast(salesreasonid as string) as salesreasonid
+        , name
+        , reasontype
+    
+    from {{ source('sales', 'sales_salesreason') }}
 )
 
 select * from source

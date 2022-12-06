@@ -1,7 +1,7 @@
 with source as (
 
     select 
-        businessentityid
+        cast(businessentityid as string) as businessentityid
         , persontype
         , namestyle
         , firstname
