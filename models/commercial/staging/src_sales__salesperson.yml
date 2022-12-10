@@ -7,7 +7,7 @@ sources:
     description: Contains objects related to customers, sales orders, and sales territories.
     tables:
       - name: sales_salesperson
-        description: >
+        description: Sales representative current information.
         columns:
           - name: businessentityid
             description: Primary key.
@@ -16,19 +16,19 @@ sources:
               - not_null
 
           - name: territoryid
-            description: >
+            description: Territory currently assigned to. Foreign key to SalesTerritory.SalesTerritoryID.
 
           - name: salesquota
-            description: >
+            description: Projected yearly sales.
 
           - name: salesytd
-            description: >
+            description: Sales total year to date.
         
           - name: bonus
-            description:  >
+            description:  	Bonus due if quota is met.
 
           - name: saleslastyear
-            description: >
+            description: 	Sales total of previous year.
 
           - name: commissionpct
-            description: >
+            description: 	Commision percent received per sale.

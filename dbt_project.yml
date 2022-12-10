@@ -32,19 +32,13 @@ clean-targets:         # directories to be removed by `dbt clean`
 # as tables. These settings can be overridden in the individual model files
 # using the `{{ config(...) }}` macro.
 models:
-  lighthouse_adventure_works:
+  dbt_adventure_works:
     # Config indicated by + and applies to all files under models/example/
     commercial:
-      staging: &staging
+      staging: 
         +materialized: ephemeral
-      intermediate: &intermediate
+      intermediate: 
         +materialized: view
-      marts: &marts
+      marts: 
         +materialized: table
-        +grants: # This does not work on postgres (it seems)
-            select: ['bi_user']
-    bi-tool:
-      +enabled: false
 
-on-run-end:
-- "{{ grant_select_on_schemas(schemas, 'bi_user') }}"

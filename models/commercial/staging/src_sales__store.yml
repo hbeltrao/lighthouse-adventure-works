@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: sales
+    schema: adventure_works_sales_raw
+    database: adventure-works-368713
+    description: Contains objects related to customers, sales orders, and sales territories.
+    tables:
+      - name: sales_store
+        description: Customers (resellers) of Adventure Works products.
+        columns:
+          - name: businessentityid
+            description: Primary key. Foreign key to Customer.BusinessEntityID.
+            tests:
+              - unique
+              - not_null
+          
+          - name: salespersonid
+            description: 	ID of the sales person assigned to the customer. Foreign key to SalesPerson.BusinessEntityID.
+          
+          - name: name
+            description: Name of the store.

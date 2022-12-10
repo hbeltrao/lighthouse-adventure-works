@@ -40,6 +40,7 @@ with sales_order_headers as (
         , sales_order_headers.totaldue
         , sales_order_headers.customerid
         , sales_order_headers.accountnumber
+        , sales_order_headers.last_updated_date
     
     from sales_order_details
 

@@ -1,4 +1,4 @@
-    with sales_order_details as (
+with sales_order_details as (
 
 select * from {{ ref('int_sales_orders_details') }}
 )
@@ -50,6 +50,7 @@ select * from {{ ref('int_sales_orders_details') }}
         , sales_order_details.freight
         , sales_order_details.totaldue
         , sales_order_details.customerid
+        , sales_order_details.last_updated_date
         , customer.customer_full_name
         , locations.city
         , locations.spatiallocation
@@ -81,4 +82,13 @@ select * from {{ ref('int_sales_orders_details') }}
     left join card_type on sales_order_details.creditcardid = card_type.creditcardid
 )
 
-select * from joined
+, null_fixed as (
+
+    select
+        *
+        , case when cardtype is null then 'money' else cardtype end as cardtype_fixed
+    
+    from joined
+)
+
+select * from null_fixed

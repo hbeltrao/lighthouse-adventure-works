@@ -1,0 +1,104 @@
+version: 2
+
+models:
+  - name: fct_sales_full
+    description: ""
+    columns:
+      - name: salesorderdetailid
+        description: ""
+
+      - name: salesorderid
+        description: ""
+
+      - name: productid
+        description: ""
+
+      - name: unitprice
+        description: ""
+
+      - name: orderqty
+        description: ""
+
+      - name: specialofferid
+        description: ""
+
+      - name: unitpricediscount
+        description: ""
+
+      - name: salespersonid
+        description: ""
+
+      - name: shiptoaddressid
+        description: ""
+
+      - name: onlineorderflag
+        description: ""
+
+      - name: status
+        description: ""
+
+      - name: orderdate
+        description: ""
+
+      - name: duedate
+        description: ""
+
+      - name: shipdate
+        description: ""
+
+      - name: subtotal
+        description: ""
+
+      - name: creditcardid
+        description: ""
+
+      - name: freight
+        description: ""
+
+      - name: totaldue
+        description: ""
+
+      - name: customerid
+        description: ""
+
+      - name: customer_full_name
+        description: ""
+
+      - name: city
+        description: ""
+
+      - name: spatiallocation
+        description: ""
+
+      - name: state_province_name
+        description: ""
+
+      - name: state_province_code
+        description: ""
+
+      - name: country_name
+        description: ""
+
+      - name: name
+        description: ""
+
+      - name: year_date
+        description: ""
+
+      - name: month_date
+        description: ""
+
+      - name: week_date
+        description: ""
+
+      - name: day_date
+        description: ""
+
+      - name: year_months
+        description: ""
+
+      - name: cardtype
+        description: ""
+
+      - name: cardtype_fixed
+        description: ""

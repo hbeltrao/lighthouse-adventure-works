@@ -21,19 +21,19 @@ sources:
               - not_null
 
           - name: productid
-            description: >
+            description: 	Product identification number. Foreign key to Product.ProductID.
         
           - name: unitprice
-            description: >
+            description: Vendor's selling price of a single product.
           
           - name: orderqty
-            description: >
+            description: Quantity ordered.
 
           - name: specialofferid
-            description: >
+            description: Promotional code. Foreign key to SpecialOffer.SpecialOfferID.
           
           - name: carriertrackingnumber
-            description: >
+            description: Shipment tracking number supplied by the shipper.
 
           - name: unitpricediscount
-            description: >
+            description: Discount amount.

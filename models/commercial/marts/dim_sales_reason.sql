@@ -12,8 +12,8 @@ with sales_reason as (
 
     select 
         salesorder_header_salesreason.salesorderid
-        , sales_reason.name as sale_reason_name
-        , sales_reason.reasontype as sale_reason_type
+        , sales_reason.sale_reason_name
+        , sales_reason.sale_reason_type
     
     from sales_reason
 
@@ -21,4 +21,46 @@ with sales_reason as (
     on sales_reason.salesreasonid = salesorder_header_salesreason.salesreasonid
 )
 
-select * from joined
+, adjusted as (
+
+    select
+        salesorderid
+        , case when sale_reason_name = 'Demo Event' then 'Demo_Event'
+            when sale_reason_name = 'Magazine Advertisement' then 'Magazine_Advertisement'
+            when sale_reason_name = 'Television  Advertisement' then 'Television_Advertisement'
+            when sale_reason_name = 'On Promotion' then 'On_Promotion'
+            else sale_reason_name
+            end as sale_reason_name
+    
+    from joined
+)
+
+, pivoted as (
+
+    select
+        *
+
+    from adjusted
+
+        pivot (count(*) for sale_reason_name in ('Other','Price','Review', 'Quality','Manufacturer','Demo_Event','Sponsorship','Magazine_Advertisement','Television_Advertisement','On_Promotion'))
+)
+
+, deduped as (
+
+    select 
+        distinct salesorderid
+        , Other
+        , Price
+        , Review
+        , Quality
+        , Manufacturer
+        , Demo_Event
+        , Sponsorship
+        , Magazine_Advertisement
+        , Television_Advertisement
+        , On_Promotion
+    
+    from pivoted
+)
+
+select * from deduped

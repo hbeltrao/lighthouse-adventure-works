@@ -7,7 +7,7 @@ sources:
     description: This is the Person Schema, containing all information from every person (employee, customer, supplier etc)
     tables:
       - name: person_address
-        description: >
+        description: Street address information for customers, employees, and vendors.
         columns:
           - name: addressid
             description: Primary key for address records.
@@ -16,19 +16,19 @@ sources:
               - not_null
 
           - name: stateprovinceid
-            description: foreign key connecting state_province table
+            description: 	Unique identification number for the state or province. Foreign key to StateProvince table.
           
           - name: city
             description: full name of each city
           
           - name: spatiallocation
-            description: >
+            description: 	Latitude and longitude of this address.
           
           - name: addressline1
-            description: >
+            description: First street address line.
           
           - name: addressline2
-            description: >
+            description: 	Second street address line.
           
           - name: postalcode
-            description: >
+            description: 	Postal code for the street address.

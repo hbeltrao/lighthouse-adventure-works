@@ -22,6 +22,7 @@ with source as (
         , onlineorderflag
         , taxamt
         , purchaseordernumber
+        , _sdc_batched_at as last_updated_date
     
     from {{ source('sales', 'sales_salesorderheader') }}
 )

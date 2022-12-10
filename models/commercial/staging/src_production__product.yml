@@ -4,10 +4,10 @@ sources:
   - name: production
     schema: adventure_works_production_raw
     database: adventure-works-368713
-    description: >
+    description: Schema related to manufacture of products
     tables:
       - name: production_product
-        description: >
+        description: Products sold or used in the manfacturing of sold products.
         columns:
           - name: productid
             description: Primary key.
@@ -16,4 +16,4 @@ sources:
               - not_null
 
           - name: name
-            description: >
+            description: Name of the product.
